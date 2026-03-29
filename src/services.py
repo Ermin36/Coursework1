@@ -27,12 +27,3 @@ def investment_bank(month: str, transactions: list[dict[str, Any]], limit: int) 
         count += diff(item.amount, limit)
 
     return count
-
-
-# def search(data: list[dict[str, Any]], find_str: str) -> list[dict[str, Any]]: pass
-
-
-# def search_by_phone_number(data: list[dict[str, Any]], number: str) -> list[dict[str, Any]]: pass
-
-
-# def search_by_fio(data: list[dict[str, Any]], fio: str) -> list[dict[str, Any]]: pass

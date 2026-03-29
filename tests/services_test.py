@@ -1,11 +1,7 @@
 import pytest
 from src.services import investment_bank
 
-
-class TestFuncInvestmentBank:
-
-    @pytest.mark.parametrize(
-        'item_dict, limit, result', [
+test_data = [
             ({
             "Сумма операции": -120,
             "Бонусы (включая кэшбэк)": 3,
@@ -43,6 +39,11 @@ class TestFuncInvestmentBank:
             "Статус": "OK",
         }, 10, 9)
         ]
+
+class TestFuncInvestmentBank:
+
+    @pytest.mark.parametrize(
+        'item_dict, limit, result', test_data
     )
     def test_investment_bank(self, item_dict: dict, limit: int, result: float) -> None:
         """Тест функции вычисления суммы для копилки"""
