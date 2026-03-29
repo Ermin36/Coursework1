@@ -73,7 +73,7 @@ class Operations:
     def __len__(self) -> int:
         return len(self.__operation_list)
 
-    def __getitem__(self, item) -> Operation:
+    def __getitem__(self, item: int) -> Operation:
         return self.__operation_list[item]
 
     @classmethod
@@ -115,7 +115,10 @@ class Operations:
         self.__operation_list = sort_list
 
     def sort_by_date(self, date: str | None = None) -> None:
-        """Сортировка массива по параметру date с начала месяца по текущую дату"""
+        """
+        Сортировка массива по параметру date с начала месяца по текущую дату
+        :param date: дата в формате YYYY.MM.DD hh:mm:ss
+        """
         date_obj = dt.datetime.strptime(date, "%Y.%m.%d %H:%M:%S") if date is not None else dt.datetime.now()
         date_start = date_obj.replace(day=1)
         sort_list = [item for item in self.__operation_list if date_start <= item.date <= date_obj]
