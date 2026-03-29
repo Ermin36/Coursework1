@@ -6,7 +6,7 @@ from collections import Counter
 
 class Operation:
     """Класс одной операции"""
-
+    __slots__ = ('date', 'card_number', 'status', 'amount', 'currency_name', 'cashback', 'category', 'mcc', 'description', 'bonus')
     date: dt.datetime
     card_number: str
     status: str
@@ -92,7 +92,7 @@ class Operations:
     def __len__(self) -> int:
         return len(self.__operation_list)
 
-    def __getitem__(self, item) -> Operation:
+    def __getitem__(self, item: int) -> Operation:
         return self.__operation_list[item]
 
     @classmethod
