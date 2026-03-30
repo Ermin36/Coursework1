@@ -32,7 +32,7 @@ def decor_reports_arg(file_name: str) -> Callable:
         return inner
     return wrapper
 
-
+@decor_reports
 def spending_by_category(transactions: pd.DataFrame, category: str, date: Optional[str] = None) -> pd.DataFrame:
     """
     Функция сбора трат по категории за заданную дату времени

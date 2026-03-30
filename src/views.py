@@ -75,10 +75,10 @@ def get_currency_rates(path: str) -> list[dict]:
 
     response = requests.get(http_request, headers=header_data)
     status_code = response.status_code
-    result_json: dict = response.json()
     if status_code != 200:
         return []
 
+    result_json: dict = response.json()
     rates = result_json.get("rates", {})
     out_data = []
     for _, (code, amount) in enumerate(rates.items()):
