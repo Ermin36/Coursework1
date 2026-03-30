@@ -1,0 +1,12 @@
+#files
+.gitignore
+*.bat
+.coverage
+htmlcov/.gitattributes
+.env
+
+#directory
+.venv/
+venv/
+.idea/
+__pycache__/
