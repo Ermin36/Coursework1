@@ -26,6 +26,22 @@ class TestClassOperation:
         assert operation.description == "testing"
         assert operation.bonus == 2
 
+    def test_json(self, operation: Operation) -> None:
+        """Тест функции получения json данных"""
+        data_dict = {
+            "Сумма операции": -1200.0,
+            "Бонусы (включая кэшбэк)": 2,
+            "Номер карты": "Test",
+            "Кэшбэк": 12.0,
+            "Категория": "Test",
+            "Валюта операции": "RUB",
+            "Дата операции": "05.12.2021 00:00:00",
+            "Описание": "testing",
+            "MCC": 53,
+            "Статус": "OK",
+        }
+        assert operation.json == data_dict
+
     def test_operation_as_dict(self) -> None:
         """Тест создание класса из словаря"""
         data_dict = {
@@ -151,6 +167,27 @@ class TestClassOperations:
         assert isinstance(result2[0], Operation)
         read_mock.assert_called_once_with('./data/test.xlsx')
 
+    def test_read_dataframe(self) -> None:
+        """Тест функции преобразования DataFrame в Operations"""
+        data_file_df = pd.DataFrame(
+            {
+                'Дата операции': ['12.03.2021 15:14:03'],
+                'Номер карты': ['*5432'],
+                'Статус': ['OK'],
+                'Сумма операции': [135.1],
+                'Валюта операции': ['RUB'],
+                'Кэшбэк': [0.0],
+                'Категория': ['test'],
+                'MCC': [0.0],
+                'Описание': ['testing'],
+                'Бонусы (включая кэшбэк)': [0]
+            }
+        )
+        operations = Operations.read_dataframe(data_file_df)
+        assert len(operations) == 1
+        assert isinstance(operations[0], Operation)
+        assert operations[0].card_number == '*5432'
+
     def test_add_operation(self, operations: Operations) -> None:
         """Тест функции добавления операции"""
         data_dict = {
@@ -178,6 +215,27 @@ class TestClassOperations:
 
         assert isinstance(result, list)
         assert isinstance(result[0], Operation)
+
+    def test_dataframe(self) -> None:
+        """Тест функции получения DataFrame"""
+        data_file_df = pd.DataFrame(
+            {
+                'Дата операции': ['12.03.2021 15:14:03'],
+                'Номер карты': ['*5432'],
+                'Статус': ['OK'],
+                'Сумма операции': [135.1],
+                'Валюта операции': ['RUB'],
+                'Кэшбэк': [0.0],
+                'Категория': ['test'],
+                'MCC': [0.0],
+                'Описание': ['testing'],
+                'Бонусы (включая кэшбэк)': [0]
+            }
+        )
+        operations = Operations.read_dataframe(data_file_df)
+        result = operations.dataframe
+
+        assert list(result.columns) == list(data_file_df.columns)
 
     def test_sort_by_status(self, operations: Operations) -> None:
         """Тест функции сортировки по статусу"""

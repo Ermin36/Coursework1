@@ -6,7 +6,7 @@ from collections import Counter
 
 class Operation:
     """Класс одной операции"""
-
+    __slots__ = ('date', 'card_number', 'status', 'amount', 'currency_name', 'cashback', 'category', 'mcc', 'description', 'bonus')
     date: dt.datetime
     card_number: str
     status: str
@@ -31,6 +31,25 @@ class Operation:
         self.description = description
         self.bonus = bonus
         pass
+
+    @property
+    def json(self) -> dict:
+        """
+        Возвращает первоначальный словарь
+        :return: dict
+        """
+        return {
+            'Дата операции': self.date.strftime("%d.%m.%Y %H:%M:%S"),
+            'Номер карты': self.card_number,
+            'Статус': self.status,
+            'Сумма операции': -self.amount,
+            'Валюта операции': self.currency_name,
+            'Кэшбэк': self.cashback,
+            'Категория': self.category,
+            'MCC': self.mcc,
+            'Описание': self.description,
+            'Бонусы (включая кэшбэк)': self.bonus
+        }
 
     @classmethod
     def new_operation_as_dict(cls, operation_dict: dict) -> 'Operation':
@@ -99,6 +118,17 @@ class Operations:
             data = Operations()
             return data
 
+    @classmethod
+    def read_dataframe(cls, operations: pd.DataFrame) -> 'Operations':
+        columns = operations.columns
+        data_list = Operations()
+        for index in range(len(operations)):
+            item = {}
+            for column in columns:
+                item[column] = operations[column][index]
+            data_list.add(Operation.new_operation_as_dict(item))
+        return data_list
+
     def add(self, operation: Operation) -> None:
         """Добавляет операцию в массив"""
         self.__operation_list.append(operation)
@@ -107,6 +137,13 @@ class Operations:
     def operation_list(self) -> list[Operation]:
         """Возвращает список операций"""
         return self.__operation_list
+
+    @property
+    def dataframe(self) -> pd.DataFrame:
+        """Получение DataFrame из данных"""
+        data_list: list[dict] = [item.json for item in self.__operation_list]
+
+        return pd.DataFrame(data_list)
 
     def sort_by_status(self, status: str) -> None:
         """Сортировка массива по параметру status"""
