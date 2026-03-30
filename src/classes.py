@@ -121,13 +121,14 @@ class Operations:
     @classmethod
     def read_dataframe(cls, operations: pd.DataFrame) -> 'Operations':
         columns = operations.columns
-        data_list = Operations()
+        data_list = []
         for index in range(len(operations)):
             item = {}
             for column in columns:
                 item[column] = operations[column][index]
-            data_list.add(Operation.new_operation_as_dict(item))
-        return data_list
+            data_list.append(Operation.new_operation_as_dict(item))
+        data_out = Operations(data_list)
+        return data_out
 
     def add(self, operation: Operation) -> None:
         """Добавляет операцию в массив"""

@@ -3,6 +3,7 @@ import pandas as pd
 from typing import Optional
 import datetime as dt
 from typing import Callable, Any
+from pathlib import Path
 
 from src import Operations
 
@@ -12,7 +13,9 @@ def decor_reports(func: Callable) -> Callable:
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         result: pd.DataFrame = func(*args, **kwargs)
-        result.to_csv('../reports/test.rep', sep='|', index=False)
+        path = Path('./reports/test.rep')
+        path.parent.mkdir(parents=True, exist_ok=True)
+        result.to_csv(path, sep='|', index=False)
         return result
     return wrapper
 
